@@ -4,6 +4,7 @@ import pymysql
 import datetime
 import csv
 import io
+import os
 
 app = Flask(__name__)
 app.secret_key = 'your_secret_key'  # For session management
@@ -20,12 +21,12 @@ db_config = {
     'database': 'spamdb'
 }
 
-#   Redirect root to login
+# Redirect root to login
 @app.route('/')
 def root():
     return redirect(url_for('login'))
 
-#   Register Page
+# Register Page
 @app.route('/register', methods=['GET', 'POST'])
 def register():
     if request.method == 'POST':
@@ -43,7 +44,7 @@ def register():
         return render_template("register.html", message="Registration successful! Please login.")
     return render_template("register.html")
 
-#   Login Page
+# Login Page
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     if request.method == 'POST':
@@ -63,13 +64,13 @@ def login():
             return render_template('login.html', error="Invalid credentials.")
     return render_template('login.html')
 
-#    Logout
+# Logout
 @app.route('/logout')
 def logout():
     session.pop('user', None)
     return redirect(url_for('login'))
 
-#  Home (Spam Detector)
+# Home (Spam Detector)
 @app.route('/home', methods=['GET', 'POST'])
 def home():
     if 'user' not in session:
@@ -94,7 +95,6 @@ def home():
 # Admin History
 @app.route('/admin-history')
 def admin_history():
-    # Allow only admin to access
     if 'user' not in session or session['user'] != 'admin':
         return redirect(url_for('login'))
 
@@ -104,7 +104,6 @@ def admin_history():
         records = cursor.fetchall()
     conn.close()
     return render_template("admin.html", records=records)
-
 
 # Download CSV
 @app.route('/download-history')
@@ -131,6 +130,8 @@ def download_history():
         download_name='prediction_history.csv',
         as_attachment=True
     )
+
+# Feedback
 @app.route('/feedback', methods=['POST'])
 def feedback():
     if 'user' not in session:
@@ -151,16 +152,7 @@ def feedback():
 
     return render_template("index.html", prediction=None, feedback_msg="Thank you for your feedback!")
 
-
-from flask import Flask
-
-app = Flask(__name__)
-
-
-
+# Run the app
 if __name__ == '__main__':
-    import os
     port = int(os.environ.get("PORT", 5000))
     app.run(host='0.0.0.0', port=port)
-
-
