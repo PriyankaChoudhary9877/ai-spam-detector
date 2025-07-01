@@ -38,7 +38,7 @@
   <!-- Slide: Home -->
   <div class="slide active" id="home">
     <div class="container">
-      <h2>Check If Your Message Is Spam</h2>
+      <h2>Check If Your Mail Is Spam</h2>
       <form action="/home" method="POST">
         <textarea name="message" placeholder="Paste your message here..." required>{{ request.form['message'] if prediction else '' }}</textarea>
         <button type="submit" class="submit-btn">Detect Spam</button>
