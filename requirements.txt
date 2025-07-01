@@ -1,0 +1,4 @@
+Flask
+pymysql
+scikit-learn
+numpy
