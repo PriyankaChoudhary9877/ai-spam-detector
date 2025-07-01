@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Admin - History</title>
+    <style>
+        body { font-family: Arial; padding: 20px; }
+        table { width: 100%; border-collapse: collapse; }
+        th, td { border: 1px solid #ccc; padding: 8px; }
+    </style>
+</head>
+<body>
+    <h1>Prediction History (Admin)</h1>
+    <a href="/download-history">
+    <button>📥 Download History</button>
+</a>
+
+    <table>
+        <tr>
+            <th>ID</th>
+            <th>Text</th>
+            <th>Prediction</th>
+            <th>Timestamp</th>
+            <th>User</th>
+        </tr>
+        {% for row in records %}
+        <tr>
+            <td>{{ row['id'] }}</td>
+            <td>{{ row['text'] }}</td>
+            <td>{{ row['prediction'] }}</td>
+            <td>{{ row['timestamp'] }}</td>
+            <td>{{ row.user_id }}</td> 
+        </tr>
+        {% endfor %}
+    </table>
+</body>
+</html>

@@ -1,25 +1,30 @@
 from flask import Flask, render_template, request, redirect, url_for, session, send_file
 import pickle
-import pymysql
 import datetime
 import csv
 import io
 import os
+import psycopg2
+
+# Securely get password from environment variable
+DB_PASSWORD = os.environ["SUPABASE_DB_PASSWORD"]
+
+
+def get_connection():
+    return psycopg2.connect(
+        host="aws-0-ap-south-1.pooler.supabase.com",
+        port="5432",
+        dbname="postgres",
+        user="postgres.pybqaiwoijmxpikyyvty",
+        password=DB_PASSWORD
+    )
 
 app = Flask(__name__)
 app.secret_key = 'your_secret_key'  # For session management
 
-# Load model & vectorizer
+# Load your model and vectorizer
 model = pickle.load(open("spam_model.pkl", "rb"))
 vectorizer = pickle.load(open("vectorizer.pkl", "rb"))
-
-# Database config
-db_config = {
-    'host': 'localhost',
-    'user': 'root',
-    'password': 'systemelvish',
-    'database': 'spamdb'
-}
 
 # Redirect root to login
 @app.route('/')
@@ -33,7 +38,7 @@ def register():
         username = request.form['username']
         password = request.form['password']
 
-        conn = pymysql.connect(**db_config)
+        conn = get_connection()
         with conn.cursor() as cursor:
             cursor.execute("SELECT * FROM users WHERE username=%s", (username,))
             if cursor.fetchone():
@@ -51,7 +56,7 @@ def login():
         username = request.form['username']
         password = request.form['password']
 
-        conn = pymysql.connect(**db_config)
+        conn = get_connection()
         with conn.cursor() as cursor:
             cursor.execute("SELECT * FROM users WHERE username=%s AND password=%s", (username, password))
             user = cursor.fetchone()
@@ -83,10 +88,12 @@ def home():
         pred = model.predict(data)[0]
         prediction = "Spam" if pred == 1 else "Not Spam"
 
-        conn = pymysql.connect(**db_config)
+        conn = get_connection()
         with conn.cursor() as cursor:
-            cursor.execute("INSERT INTO emails (text, prediction, timestamp) VALUES (%s, %s, %s)",
-                           (message, prediction, datetime.datetime.now()))
+            cursor.execute(
+                "INSERT INTO emails (text, prediction, timestamp,user_id) VALUES (%s, %s, %s,%s)",
+                (message, prediction, datetime.datetime.now(),session['user'])
+            )
             conn.commit()
         conn.close()
 
@@ -98,11 +105,13 @@ def admin_history():
     if 'user' not in session or session['user'] != 'admin':
         return redirect(url_for('login'))
 
-    conn = pymysql.connect(**db_config)
-    with conn.cursor(pymysql.cursors.DictCursor) as cursor:
+    conn = get_connection()
+    with conn.cursor() as cursor:
         cursor.execute("SELECT * FROM emails ORDER BY timestamp DESC")
-        records = cursor.fetchall()
+        columns = [desc[0] for desc in cursor.description]
+        records = [dict(zip(columns, row)) for row in cursor.fetchall()]
     conn.close()
+
     return render_template("admin.html", records=records)
 
 # Download CSV
@@ -111,7 +120,7 @@ def download_history():
     if 'user' not in session:
         return redirect(url_for('login'))
 
-    conn = pymysql.connect(**db_config)
+    conn = get_connection()
     with conn.cursor() as cursor:
         cursor.execute("SELECT id, text, prediction, timestamp FROM emails ORDER BY timestamp DESC")
         rows = cursor.fetchall()
@@ -141,7 +150,7 @@ def feedback():
     email = request.form['email']
     message = request.form['message']
 
-    conn = pymysql.connect(**db_config)
+    conn = get_connection()
     with conn.cursor() as cursor:
         cursor.execute(
             "INSERT INTO feedback (name, email, message, timestamp) VALUES (%s, %s, %s, %s)",

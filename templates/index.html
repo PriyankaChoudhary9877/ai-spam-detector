@@ -18,6 +18,22 @@
       <button onclick="showSlide('contact')">Feedback</button>
     </div>
   </div>
+{% if session['user'] == 'admin' %}
+  <div style="text-align: right; margin: 20px;">
+    <a href="{{ url_for('admin_history') }}" style="
+        background: linear-gradient(90deg, #4b6cb7, #182848);
+        color: white;
+        padding: 10px 20px;
+        border-radius: 8px;
+        text-decoration: none;
+        font-weight: bold;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        transition: background 0.3s ease;
+    " onmouseover="this.style.background='linear-gradient(90deg, #182848, #4b6cb7)'" onmouseout="this.style.background='linear-gradient(90deg, #4b6cb7, #182848)'">
+      🔐 Admin Panel
+    </a>
+  </div>
+{% endif %}
 
   <!-- Slide: Home -->
   <div class="slide active" id="home">
