@@ -1,23 +1,131 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Register</title>
+  <title>Register - AI Mail Spam Detector</title>
   <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      padding: 0;
+      height: 100vh;
+      font-family: 'Segoe UI', sans-serif;
+      background: url('https://wallpapercave.com/wp/wp7043567.jpg') no-repeat center center fixed;
+      background-size: cover;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .register-box {
+      background: rgba(0, 0, 0, 0.7);
+      padding: 40px 30px;
+      border-radius: 20px;
+      width: 100%;
+      max-width: 420px;
+      backdrop-filter: blur(15px);
+      border: 2px solid #00f0ff40;
+      box-shadow: 0 0 25px #00f0ff50;
+      text-align: center;
+    }
+
+    .register-box:hover {
+      box-shadow: 0 0 40px #00f0ff, 0 0 80px #00f0ff99;
+      transition: 0.3s ease;
+    }
+
+    .register-box h2 {
+      color: #00e0ff;
+      margin-bottom: 30px;
+      font-size: 26px;
+      background: linear-gradient(to right, #00f0ff, #00ff9f);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .register-box input[type="text"],
+    .register-box input[type="password"] {
+      width: 100%;
+      padding: 12px;
+      margin-bottom: 20px;
+      border-radius: 10px;
+      border: none;
+      background: #1e293b;
+      color: white;
+      font-size: 15px;
+    }
+
+    .register-box input::placeholder {
+      color: #94a3b8;
+    }
+
+    .register-box input:focus {
+      outline: none;
+      box-shadow: 0 0 8px #00f0ff80;
+    }
+
+    .register-box button {
+      width: 100%;
+      padding: 12px;
+      border: none;
+      border-radius: 25px;
+      font-size: 16px;
+      color: white;
+      cursor: pointer;
+      background: linear-gradient(to right, #00f0ff, #00ff9f);
+      box-shadow: 0 0 12px #00f0ff60;
+      transition: transform 0.3s ease;
+    }
+
+    .register-box button:hover {
+      transform: scale(1.05);
+    }
+
+    .register-box p {
+      color: #cbd5e1;
+      font-size: 14px;
+      margin-top: 20px;
+    }
+
+    .register-box a {
+      color: #38bdf8;
+      text-decoration: none;
+    }
+
+    .register-box a:hover {
+      text-decoration: underline;
+    }
+
+    .error {
+      color: red;
+      font-size: 14px;
+      margin-bottom: 10px;
+    }
+
+    .message {
+      color: #32cd32;
+      font-size: 14px;
+      margin-bottom: 10px;
+    }
+  </style>
 </head>
 <body>
-  <div class="container login-container">
-    <h2>📝 Register</h2>
+  <div class="register-box">
+    <h2>📝 Register for AI Mail Spam Detector</h2>
     {% if error %}
-      <p style="color: red;">{{ error }}</p>
+      <div class="error">{{ error }}</div>
     {% endif %}
     {% if message %}
-      <p style="color: green;">{{ message }}</p>
+      <div class="message">{{ message }}</div>
     {% endif %}
     <form method="POST">
       <input type="text" name="username" placeholder="Create Username" required>
       <input type="password" name="password" placeholder="Create Password" required>
-      <button type="submit" class="submit-btn">Register</button>
+      <button type="submit">Register</button>
     </form>
     <p>Already have an account? <a href="{{ url_for('login') }}">Login here</a></p>
   </div>

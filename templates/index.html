@@ -5,6 +5,104 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>AI Spam Detector</title>
   <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+  <style>
+    body {
+      background: url('https://wallpapercave.com/wp/wp7043567.jpg') no-repeat center center fixed;
+      background-size: cover;
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      color: white;
+    }
+
+    .navbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 20px;
+      background: rgba(0, 0, 0, 0.6);
+      backdrop-filter: blur(10px);
+    }
+
+    .nav-links button {
+      background: linear-gradient(to right, #00f0ff, #00ff9f);
+      color: black;
+      border: none;
+      padding: 10px 16px;
+      margin-left: 10px;
+      border-radius: 8px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .nav-links button:hover {
+      text-decoration: none !important;
+      background: linear-gradient(to right, #00ff9f, #00f0ff);
+    }
+
+    .slide {
+      display: none;
+      padding: 40px 20px;
+    }
+
+    .slide.active {
+      display: block;
+    }
+
+    .container {
+      max-width: 800px;
+      margin: auto;
+      background: rgba(0, 0, 0, 0.7);
+      padding: 40px;
+      border-radius: 20px;
+      backdrop-filter: blur(12px);
+      box-shadow: 0 0 30px #00f0ff50;
+    }
+
+    textarea, input {
+      width: 100%;
+      padding: 12px;
+      margin: 10px 0;
+      border-radius: 10px;
+      border: none;
+      background: #1e293b;
+      color: white;
+    }
+
+    .submit-btn, .download-btn {
+      width: 100%;
+      padding: 12px;
+      background: linear-gradient(to right, #00f0ff, #00ff9f);
+      border: none;
+      border-radius: 25px;
+      color: black;
+      font-weight: bold;
+      margin-top: 10px;
+    }
+
+    .result {
+      margin-top: 15px;
+      padding: 12px;
+      border-radius: 10px;
+      font-weight: bold;
+      text-align: center;
+    }
+
+    .result.spam {
+      background: #ff4d4d;
+      color: white;
+    }
+
+    .result.ham {
+      background: #4caf50;
+      color: white;
+    }
+
+    .dark-toggle {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+    }
+  </style>
 </head>
 <body>
 
@@ -18,6 +116,7 @@
       <button onclick="showSlide('contact')">Feedback</button>
     </div>
   </div>
+
 {% if session['user'] == 'admin' %}
   <div style="text-align: right; margin: 20px;">
     <a href="{{ url_for('admin_history') }}" style="
@@ -28,19 +127,17 @@
         text-decoration: none;
         font-weight: bold;
         box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-        transition: background 0.3s ease;
-    " onmouseover="this.style.background='linear-gradient(90deg, #182848, #4b6cb7)'" onmouseout="this.style.background='linear-gradient(90deg, #4b6cb7, #182848)'">
-      🔐 Admin Panel
-    </a>
+    ">🔐 Admin Panel</a>
   </div>
 {% endif %}
 
   <!-- Slide: Home -->
   <div class="slide active" id="home">
     <div class="container">
-      <h2>Check If Your Mail Is Spam</h2>
+      <h2>📩 Check If Your Mail Is Spam</h2>
+      <p>Enter your email content below and let our AI model predict whether it's spam or not!</p>
       <form action="/home" method="POST">
-        <textarea name="message" placeholder="Paste your message here..." required>{{ request.form['message'] if prediction else '' }}</textarea>
+        <textarea name="message" placeholder="Paste your message here..." required rows="6">{{ request.form['message'] if prediction else '' }}</textarea>
         <button type="submit" class="submit-btn">Detect Spam</button>
       </form>
       {% if prediction %}
@@ -54,30 +151,36 @@
 
   <!-- Slide: About -->
   <div class="slide" id="about">
-    <div class="about">
-      <h3>About This Project</h3>
-      <p>This AI-powered spam detector helps analyze whether a message is spam using machine learning techniques like TF-IDF and Naive Bayes.</p>
+    <div class="container">
+      <h3>📘 About This Project</h3>
+      <p>This project is an AI-powered email classifier designed to identify spam messages in real time.</p>
+      <p>Built using Flask, Python, TF-IDF, and Naive Bayes, it offers a simple interface for end users to detect spam quickly and effectively.</p>
+      <p>It’s lightweight, mobile-friendly, and a great example of applying machine learning in cybersecurity.</p>
     </div>
   </div>
 
   <!-- Slide: How It Works -->
   <div class="slide" id="how">
-    <div class="how">
-      <h3>How It Works</h3>
-      <p>1. The user submits a message.</p>
-      <p>2. The backend processes it with a trained model.</p>
-      <p>3. The result is shown on the screen.</p>
+    <div class="container">
+      <h3>⚙️ How It Works</h3>
+      <p>1. The user submits a message using the input field.</p>
+      <p>2. The backend vectorizes the message using TF-IDF.</p>
+      <p>3. A trained Naive Bayes classifier analyzes the vectorized input.</p>
+      <p>4. Based on the learned data patterns, the model outputs whether the message is spam or ham.</p>
+      <p>5. The result is displayed with an option to download it.</p>
     </div>
   </div>
 
   <!-- Slide: Tips -->
   <div class="slide" id="tips">
-    <div class="tips">
-      <h3>Tips to Avoid Spam</h3>
+    <div class="container">
+      <h3>💡 Tips to Avoid Spam</h3>
       <ul>
-        <li>Don't click suspicious links.</li>
-        <li>Ignore messages about winning prizes.</li>
-        <li>Check sender email addresses carefully.</li>
+        <li>Be cautious with links and attachments from unknown senders.</li>
+        <li>Don't reply to emails that ask for personal information.</li>
+        <li>Enable spam filters in your email service.</li>
+        <li>Use different passwords for different platforms.</li>
+        <li>Keep your devices and software updated for better protection.</li>
       </ul>
     </div>
   </div>
@@ -85,24 +188,18 @@
   <!-- Slide: Feedback -->
   <div class="slide" id="contact">
     <div class="container contact">
-      <h3>Feedback</h3>
- <form id="feedback-form" method="POST" action="/feedback" onsubmit="return showThankYou()">
-  <input type="text" name="name" placeholder="Your Name" required>
-  <input type="email" name="email" placeholder="Your Email" required>
-  <textarea name="message" placeholder="Your Feedback" required></textarea>
-  <button type="submit" class="submit-btn">Submit</button>
-</form>
-
-
-{% if feedback_msg %}
-  <p style="color: green; margin-top: 15px;">{{ feedback_msg }}</p>
-{% endif %}
-
-      <p id="feedback-msg" style="color: green; margin-top: 15px;"></p>
+      <h3>📬 Feedback</h3>
+      <form id="feedback-form" method="POST" action="/feedback" onsubmit="return showThankYou()">
+        <input type="text" name="name" placeholder="Your Name" required>
+        <input type="email" name="email" placeholder="Your Email" required>
+        <textarea name="message" placeholder="Your Feedback" required rows="4"></textarea>
+        <button type="submit" class="submit-btn">Submit</button>
+      </form>
+      {% if feedback_msg %}
+        <p style="color: lightgreen; margin-top: 15px;">{{ feedback_msg }}</p>
+      {% endif %}
     </div>
   </div>
-  <p style="color: green;">Thank you for your feedback!</p>
-
 
   <!-- Dark Mode Toggle -->
   <div class="dark-toggle">
@@ -128,17 +225,10 @@
       link.click();
     }
 
-function showThankYou() {
-  alert("✅ Thank you for your feedback!");
-  return true; // Submit form after alert
-}
-
-    
+    function showThankYou() {
+      alert("✅ Thank you for your feedback!");
+      return true;
+    }
   </script>
-
 </body>
 </html>
-
-
-
-

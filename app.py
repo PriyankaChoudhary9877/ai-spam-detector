@@ -6,7 +6,7 @@ import io
 import os
 import psycopg2
 
-# Securely get password from environment variable
+
 DB_PASSWORD = os.environ["SUPABASE_DB_PASSWORD"]
 
 
@@ -22,7 +22,7 @@ def get_connection():
 app = Flask(__name__)
 app.secret_key = 'your_secret_key'  # For session management
 
-# Load your model and vectorizer
+# Load model and vectorizer
 model = pickle.load(open("spam_model.pkl", "rb"))
 vectorizer = pickle.load(open("vectorizer.pkl", "rb"))
 
