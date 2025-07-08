@@ -1,10 +1,10 @@
-import os.path #file and path handling
-import base64 #encoding/decoding if needed later
+import os.path  # file and path handling
+import base64  # encoding/decoding if needed later
 import re
-from google.auth.transport.requests import Request 
-from google.oauth2.credentials import Credentials #google authentication
+from google.auth.transport.requests import Request
+from google.oauth2.credentials import Credentials  # google authentication
 from google_auth_oauthlib.flow import InstalledAppFlow
-from googleapiclient.discovery import build #building Gmail API services
+from googleapiclient.discovery import build  # building Gmail API services
 
 # Scopes give read-only Gmail access
 SCOPES = ['https://www.googleapis.com/auth/gmail.readonly']
@@ -13,23 +13,22 @@ def get_gmail_service():
     creds = None
 
     # Check if token already exists
-if os.path.exists('/etc/secrets/token.json'):
-    creds = Credentials.from_authorized_user_file('/etc/secrets/token.json', SCOPES)
+    if os.path.exists('/etc/secrets/token.json'):
+        creds = Credentials.from_authorized_user_file('/etc/secrets/token.json', SCOPES)
 
-
-    # If no token or token invalid, start OAuth login flow
+    # If no token or token is invalid, start OAuth login flow
     if not creds or not creds.valid:
         if creds and creds.expired and creds.refresh_token:
             creds.refresh(Request())
         else:
             flow = InstalledAppFlow.from_client_secrets_file(
-    '/etc/secrets/credentials.json', SCOPES)
-
+                '/etc/secrets/credentials.json', SCOPES
+            )
             creds = flow.run_local_server(port=0)
 
         # Save token
-with open('/etc/secrets/token.json', 'w') as token:
-    token.write(creds.to_json())
+        with open('/etc/secrets/token.json', 'w') as token:
+            token.write(creds.to_json())
 
     # Build Gmail service
     service = build('gmail', 'v1', credentials=creds)
