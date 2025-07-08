@@ -31,8 +31,6 @@ if os.path.exists('/etc/secrets/token.json'):
 with open('/etc/secrets/token.json', 'w') as token:
     token.write(creds.to_json())
 
-
-
     # Build Gmail service
     service = build('gmail', 'v1', credentials=creds)
     return service
