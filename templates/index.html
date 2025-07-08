@@ -1,8 +1,9 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>AI Spam Detector</title>
   <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
   <style>
@@ -58,7 +59,8 @@
       box-shadow: 0 0 30px #00f0ff50;
     }
 
-    textarea, input {
+    textarea,
+    input {
       width: 100%;
       padding: 12px;
       margin: 10px 0;
@@ -68,7 +70,8 @@
       color: white;
     }
 
-    .submit-btn, .download-btn {
+    .submit-btn,
+    .download-btn {
       width: 100%;
       padding: 12px;
       background: linear-gradient(to right, #00f0ff, #00ff9f);
@@ -104,6 +107,7 @@
     }
   </style>
 </head>
+
 <body>
 
   <div class="navbar">
@@ -114,10 +118,24 @@
       <button onclick="showSlide('how')">How It Works</button>
       <button onclick="showSlide('tips')">Tips</button>
       <button onclick="showSlide('contact')">Feedback</button>
+
+      {% if session['user'] %}
+      <a class="logout" href="{{ url_for('logout') }}" style="background: linear-gradient(to right, #00f0ff, #00ff9f);
+      color: black;
+      border: none;
+      padding: 10px 16px;
+      margin-left: 10px;
+      border-radius: 8px;
+      font-weight: bold;
+      text-decoration: none;
+      cursor: pointer;"> Logout </a>
+    {% endif %}
+  
+
     </div>
   </div>
 
-{% if session['user'] == 'admin' %}
+  {% if session['user'] == 'admin' %}
   <div style="text-align: right; margin: 20px;">
     <a href="{{ url_for('admin_history') }}" style="
         background: linear-gradient(90deg, #4b6cb7, #182848);
@@ -129,24 +147,51 @@
         box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
     ">🔐 Admin Panel</a>
   </div>
-{% endif %}
+  {% endif %}
 
   <!-- Slide: Home -->
   <div class="slide active" id="home">
-    <div class="container">
+
+    <!-- show gmail button  -->
+
+    {% if session['user']|lower == 'priyanka' %}
+    <a href="{{ url_for('gmail_inbox') }}" style="
+    background: linear-gradient(90deg, #4b6cb7, #182848);
+    position: absolute;
+    top: 100px;
+    right: 20px;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 8px;
+    text-decoration: none;
+    font-weight: bold;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    " ">📧 Gmail Inbox</a>
+{% endif %}
+
+
+            <!-- .... -->
+
+
+
+    <div class=" container">
       <h2>📩 Check If Your Mail Is Spam</h2>
       <p>Enter your email content below and let our AI model predict whether it's spam or not!</p>
       <form action="/home" method="POST">
-        <textarea name="message" placeholder="Paste your message here..." required rows="6">{{ request.form['message'] if prediction else '' }}</textarea>
+        <textarea name="message" placeholder="Paste your message here..." required
+          rows="6">{{ request.form['message'] if prediction else '' }}</textarea>
         <button type="submit" class="submit-btn">Detect Spam</button>
       </form>
+
       {% if prediction %}
-        <div class="result {{ 'spam' if prediction == 'Spam' else 'ham' }}">
-          Prediction: {{ prediction }}
-        </div>
+      <div class="result {{ 'spam' if prediction == 'Spam' else 'ham' }}">
+        Prediction: {{ prediction }}
+      </div>
       {% endif %}
+
+
       <button class="download-btn" onclick="downloadResult()">📥 Download Result</button>
-    </div>
+  </div>
   </div>
 
   <!-- Slide: About -->
@@ -154,7 +199,8 @@
     <div class="container">
       <h3>📘 About This Project</h3>
       <p>This project is an AI-powered email classifier designed to identify spam messages in real time.</p>
-      <p>Built using Flask, Python, TF-IDF, and Naive Bayes, it offers a simple interface for end users to detect spam quickly and effectively.</p>
+      <p>Built using Flask, Python, TF-IDF, and Naive Bayes, it offers a simple interface for end users to detect spam
+        quickly and effectively.</p>
       <p>It’s lightweight, mobile-friendly, and a great example of applying machine learning in cybersecurity.</p>
     </div>
   </div>
@@ -196,7 +242,7 @@
         <button type="submit" class="submit-btn">Submit</button>
       </form>
       {% if feedback_msg %}
-        <p style="color: lightgreen; margin-top: 15px;">{{ feedback_msg }}</p>
+      <p style="color: lightgreen; margin-top: 15px;">{{ feedback_msg }}</p>
       {% endif %}
     </div>
   </div>
@@ -231,4 +277,5 @@
     }
   </script>
 </body>
+
 </html>

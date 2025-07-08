@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Gmail Inbox</title>
+</head>
+<body>
+    <h1>📧 Gmail Inbox</h1>
+    {% for email in emails %}
+        <div style="border:1px solid #ccc; padding:10px; margin:10px;">
+            <h3>Subject: {{ email.subject }}</h3>
+            <p>{{ email.snippet }}</p>
+            <form action="/check-spam" method="POST">
+                <input type="hidden" name="message" value="{{ email.snippet }}">
+                <button type="submit">Check Spam</button>
+            </form>
+        </div>
+    {% endfor %}
+</body>
+</html>
