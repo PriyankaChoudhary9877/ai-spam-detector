@@ -13,8 +13,9 @@ def get_gmail_service():
     creds = None
 
     # Check if token already exists
-    if os.path.exists('token.json'):
-        creds = Credentials.from_authorized_user_file('token.json', SCOPES)
+if os.path.exists('/etc/secrets/token.json'):
+    creds = Credentials.from_authorized_user_file('/etc/secrets/token.json', SCOPES)
+
 
     # If no token or token invalid, start OAuth login flow
     if not creds or not creds.valid:
@@ -22,12 +23,15 @@ def get_gmail_service():
             creds.refresh(Request())
         else:
             flow = InstalledAppFlow.from_client_secrets_file(
-                'credentials.json', SCOPES)
+    '/etc/secrets/credentials.json', SCOPES)
+
             creds = flow.run_local_server(port=0)
 
         # Save token
-        with open('token.json', 'w') as token:
-            token.write(creds.to_json())
+with open('/etc/secrets/token.json', 'w') as token:
+    token.write(creds.to_json())
+
+
 
     # Build Gmail service
     service = build('gmail', 'v1', credentials=creds)
