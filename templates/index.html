@@ -105,6 +105,12 @@
       bottom: 20px;
       right: 20px;
     }
+    h3{
+      margin-bottom:15px;
+    }
+    h2{
+      margin-bottom: 5px;
+    }
   </style>
 </head>
 
@@ -129,8 +135,8 @@
       font-weight: bold;
       text-decoration: none;
       cursor: pointer;"> Logout </a>
-    {% endif %}
-  
+      {% endif %}
+
 
     </div>
   </div>
@@ -169,15 +175,12 @@
     " ">📧 Gmail Inbox</a>
 {% endif %}
 
-
             <!-- .... -->
-
-
 
     <div class=" container">
       <h2>📩 Check If Your Mail Is Spam</h2>
       <p>Enter your email content below and let our AI model predict whether it's spam or not!</p>
-      <form action="/home" method="POST">
+      <!-- <form action="/home" method="POST">
         <textarea name="message" placeholder="Paste your message here..." required
           rows="6">{{ request.form['message'] if prediction else '' }}</textarea>
         <button type="submit" class="submit-btn">Detect Spam</button>
@@ -187,7 +190,38 @@
       <div class="result {{ 'spam' if prediction == 'Spam' else 'ham' }}">
         Prediction: {{ prediction }}
       </div>
-      {% endif %}
+      {% endif %} -->
+
+      <!-- <form id="spam-form" action="/home" method="POST" onreset="clearResult()"> -->
+      <form id="spam-form" action="/home" method="POST">
+
+        <textarea name="message" placeholder="Paste your message here..." required
+          rows="6">{{ message or '' }}</textarea>
+
+        <button type="submit" class="submit-btn">Detect Spam</button>
+        <button type="reset" style="      background: linear-gradient(to right, #9dffff, #cafffb);
+      width: 100%;
+      padding: 12px;
+      border: none;
+      border-radius: 25px;
+      color: black;
+      font-weight: bold;
+      font-size: 15px;
+      margin-top: 10px;">Reset</button>
+
+      </form>
+
+      <div id="prediction-box">
+        <div id="result-box">
+          {% if prediction %}
+          <div class="result {{ 'spam' if prediction == 'Spam' else 'ham' }}">
+            Prediction: {{ prediction }}
+          </div>
+          {% endif %}
+        </div>
+
+      </div>
+
 
 
       <button class="download-btn" onclick="downloadResult()">📥 Download Result</button>
@@ -275,6 +309,25 @@
       alert("✅ Thank you for your feedback!");
       return true;
     }
+
+    // Reset 
+    function clearResultAndText() {
+      const resultBox = document.getElementById('result-box');
+      if (resultBox) resultBox.innerHTML = '';
+
+      const textarea = document.querySelector('textarea[name="message"]');
+      if (textarea) textarea.value = '';
+    }
+
+    document.addEventListener("DOMContentLoaded", function () {
+      const form = document.getElementById("spam-form");
+      if (form) {
+        form.addEventListener("reset", function (e) {
+          setTimeout(clearResultAndText, 0); // use setTimeout to let native reset run first
+        });
+      }
+    });
+
   </script>
 </body>
 
