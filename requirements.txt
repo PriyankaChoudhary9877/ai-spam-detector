@@ -2,4 +2,7 @@ Flask
 psycopg2-binary
 scikit-learn
 numpy
+google-auth
+google-auth-oauthlib
+google-api-python-client
 
