@@ -178,15 +178,25 @@ from gmail_auth import get_gmail_service  #gmail email fetch function
 
 DB_PASSWORD = os.environ["SUPABASE_DB_PASSWORD"]
 
+# def get_connection():
+#     return psycopg2.connect(os.environ["DATABASE_URL"])
+# def get_connection():
+#     return psycopg2.connect(
+#         host="aws-0-ap-south-1.pooler.supabase.com",
+#         port="5432",
+#         dbname="postgres",
+#         user="postgres.pybqaiwoijmxpikyyvty",
+#         password=DB_PASSWORD
+#           )
+
+# import os
+# import psycopg2
 
 def get_connection():
-    return psycopg2.connect(
-        host="aws-0-ap-south-1.pooler.supabase.com",
-        port="5432",
-        dbname="postgres",
-        user="postgres.pybqaiwoijmxpikyyvty",
-        password=DB_PASSWORD
-    )
+    db_url = os.getenv("DATABASE_URL")
+    if not db_url:
+        raise RuntimeError("DATABASE_URL is not set")
+    return psycopg2.connect(db_url)
 
 app = Flask(__name__)
 app.secret_key = 'your_secret_key'  # For session management
@@ -409,6 +419,11 @@ def feedback():
 
 
 # Run the app
+# if __name__ == '__main__':
+#     port = int(os.environ.get("PORT", 5000))
+#     app.run(host='0.0.0.0', port=port)
+
 if __name__ == '__main__':
+    app.debug = True  # Show errors in browser
     port = int(os.environ.get("PORT", 5000))
     app.run(host='0.0.0.0', port=port)
