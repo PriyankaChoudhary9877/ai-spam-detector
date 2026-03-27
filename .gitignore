@@ -4,3 +4,4 @@ client_secret_*.json
 __pycache__/
 .env
 *.pkl
+.venv/
