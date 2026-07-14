@@ -46,7 +46,7 @@ AI Spam Detector is a Flask-based Machine Learning web application that classifi
     </td>
     <td align="center" width="50%">
       <b>Spam Prediction</b><br /><br />
-      <img src="Public/Spam Prediction.png" width="100%" alt="Spam Prediction" />
+      <img src="public/Spam Prediction.png" width="100%" alt="Spam Prediction" />
     </td>
   </tr>
   <tr>
