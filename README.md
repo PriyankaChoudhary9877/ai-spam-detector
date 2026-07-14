@@ -12,6 +12,10 @@
 **Classify emails and messages as spam or not spam — powered by Scikit-learn Machine Learning and Gmail integration**
 
 <p>
+  <a href="https://ai-spam-detector-3w1h.onrender.com">
+    <img src="https://img.shields.io/badge/Live%20Demo-Visit%20Now-9C6B45?style=for-the-badge&logo=vercel&logoColor=white" alt="Live Demo" />
+  </a>
+  &nbsp;
   <a href="https://github.com/PriyankaChoudhary9877/ai-spam-detector">
     <img src="https://img.shields.io/badge/Source-GitHub-181717?style=for-the-badge&logo=github&logoColor=white" alt="GitHub" />
   </a>
@@ -323,6 +327,10 @@ Features planned for future releases:
       Computer Science Engineering Student<br /><br />
       <a href="https://github.com/PriyankaChoudhary9877">
         <img src="https://img.shields.io/badge/GitHub-181717?style=flat-square&logo=github&logoColor=white" />
+      </a>
+      &nbsp;
+      <a href="[https://resumeforge-ai-rho.vercel.app](https://ai-spam-detector-3w1h.onrender.com)">
+        <img src="https://img.shields.io/badge/Live%20Demo-9C6B45?style=flat-square&logo=vercel&logoColor=white" />
       </a>
       &nbsp;
       <a href="https://www.linkedin.com/in/priyanka-choudhary-58b048312/">
