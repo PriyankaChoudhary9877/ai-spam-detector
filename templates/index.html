@@ -180,19 +180,7 @@
     <div class=" container">
       <h2>📩 Check If Your Mail Is Spam</h2>
       <p>Enter your email content below and let our AI model predict whether it's spam or not!</p>
-      <!-- <form action="/home" method="POST">
-        <textarea name="message" placeholder="Paste your message here..." required
-          rows="6">{{ request.form['message'] if prediction else '' }}</textarea>
-        <button type="submit" class="submit-btn">Detect Spam</button>
-      </form>
-
-      {% if prediction %}
-      <div class="result {{ 'spam' if prediction == 'Spam' else 'ham' }}">
-        Prediction: {{ prediction }}
-      </div>
-      {% endif %} -->
-
-      <!-- <form id="spam-form" action="/home" method="POST" onreset="clearResult()"> -->
+      
       <form id="spam-form" action="/home" method="POST">
 
         <textarea name="message" placeholder="Paste your message here..." required
