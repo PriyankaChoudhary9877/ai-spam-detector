@@ -8,17 +8,6 @@ import psycopg2
 from gmail_auth import get_gmail_service  #gmail email fetch function
 import psycopg2
 
-
-# def get_connection():
-#     return psycopg2.connect(
-#         host="aws-1-ap-south-1.pooler.supabase.com",
-#         port=5432,
-#         dbname="postgres",
-#         user="postgres.mjkmzstixoxfqziirjjv",
-#         password="Test12345@radhe",
-#         sslmode="require"
-#     )
-
 def get_connection():
     return psycopg2.connect(
         host=os.environ.get("DB_HOST"),
