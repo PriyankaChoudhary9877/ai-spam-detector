@@ -126,7 +126,7 @@ AI Spam Detector is a Flask-based Machine Learning web application that classifi
 | Feature | Description |
 |---|---|
 | Machine Learning Spam Detection | Classifies any message as Spam or Not Spam using a trained model |
-| LinearSVC Classifier | High-accuracy text classification powered by Scikit-learn |
+| LinearSVC Classifier | accuracy text classification powered by Scikit-learn |
 | TF-IDF Vectorization | Converts raw text into numerical features for model input |
 | Gmail Inbox Integration (Local Development Only) | Fetch and scan Gmail messages for spam in a local environment |
 | User Authentication | Secure registration, login, and session management via Flask |
